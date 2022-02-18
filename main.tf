@@ -38,7 +38,7 @@ resource "aws_eip" "my_static_ip" {
 
 resource "aws_instance" "jenkins-master" {
    # count                  = 3
-    ami                    = "ami-05cafdf7c9f772ad2"
+    ami                    = data.aws_ami.latest_amazon_linux.id
     instance_type          = "t2.micro"
     key_name               = "${var.aws-key-name}"
     vpc_security_group_ids = [aws_security_group.jenkins.id] #додати в створену security_group
