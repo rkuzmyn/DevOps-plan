@@ -13,6 +13,11 @@
 provider "aws" {
   region = "eu-central-1"
 }
+module "aws_network" {
+#   count         = 5
+    source        = "./aws_network"
+#    some_variable = some_value
+}
 
 ##############for outputs################
 #data "aws_availability_zones" "working" {}
@@ -53,7 +58,7 @@ resource "aws_instance" "jenkins-master" {
     }
  #  depends_on = [aws_instance.jenkins-master, aws_instance.jenkins-master] # залежить від ресурсів (створюється після них)
 }
-
+#################################################################################################################
 resource "aws_security_group" "jenkins" {
   name = "Security Group for jenkins"
   description = "Security Group for jenkins"
