@@ -13,11 +13,11 @@
 provider "aws" {
   region = "eu-central-1"
 }
-module "aws_network" {
+#module "aws_network" {
 #   count         = 5
-    source        = "./aws_network"
+#    source        = "./aws_network"
 #    some_variable = some_value
-}
+#}
 
 ##############for outputs################
 #data "aws_availability_zones" "working" {}
@@ -25,7 +25,7 @@ module "aws_network" {
 #data "aws_region" "current" {}
 #data "aws_vpcs" "my_vpcs" {}
 
-data "aws_availability_zones" "available" {}
+#data "aws_availability_zones" "available" {}
 data "aws_ami" "latest_amazon_linux" {
   owners      = ["amazon"]
   most_recent = true
@@ -47,14 +47,9 @@ resource "aws_instance" "jenkins-master" {
     instance_type          = "t2.micro"
     key_name               = "${var.aws-key-name}"
     vpc_security_group_ids = [aws_security_group.jenkins.id] #додати в створену security_group
-    # user_data              =  file ("install_jenkins.sh")
+    user_data              =  file ("install_jenkins.sh")
     tags                   = {
      Name                  = "jenkins-master"
-     Owner                 = "Roman Kuzmyn"
-     E-mail                = "kuzmyn1983@gmail.com"
-     Location              = "UA"
-     Company               = "SoftJourn"
-     Project               = "DevOps-plan"
     }
  #  depends_on = [aws_instance.jenkins-master, aws_instance.jenkins-master] # залежить від ресурсів (створюється після них)
 }
@@ -62,7 +57,7 @@ resource "aws_instance" "jenkins-master" {
 resource "aws_security_group" "jenkins" {
   name = "Security Group for jenkins"
   description = "Security Group for jenkins"
-/*   dynamic "ingress" {
+   dynamic "ingress" {
     for_each = ["8080", "80"]
     content {
       from_port   = ingress.value
@@ -71,7 +66,7 @@ resource "aws_security_group" "jenkins" {
       cidr_blocks = ["0.0.0.0/0"]
     }
   }
-*/ 
+ 
 ingress {
     from_port   = 22
     to_port     = 22
@@ -87,10 +82,5 @@ ingress {
       } 
   tags                   = {
      Name                  = "jenkins"
-     Owner                 = "Roman Kuzmyn"
-     E-mail                = "kuzmyn1983@gmail.com"
-     Location              = "UA"
-     Company               = "SoftJourn"
-     Project               = "Lessons Terraform"
     }
 }
